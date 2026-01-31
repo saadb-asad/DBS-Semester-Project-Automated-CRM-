@@ -127,7 +127,7 @@ INSERT INTO ProductCategories (CategoryName) VALUES ('Software'), ('Hardware');
 INSERT INTO MarketingCampaigns (CampaignName, Budget) VALUES ('Summer Sale', 5000.00);
 
 INSERT INTO SalesAgents (FirstName, LastName, Email, RegionID) 
-VALUES ('John', 'Smith', 'john@crm.com', 1), ('Alice', 'Wonder', 'alice@crm.com', 2);
+VALUES ('Saad', 'Faizan', 'saad@crm.com', 1), ('Alice', 'Wonder', 'faizan@crm.com', 2);
 
 INSERT INTO Products (ProductName, Price, CategoryID) 
 VALUES ('CRM License', 199.99, 1), ('Laptop', 1200.00, 2);
