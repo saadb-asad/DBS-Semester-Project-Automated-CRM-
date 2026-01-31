@@ -1,10 +1,10 @@
 -- DDL Queries (Structural foundation of the Database)
 
 
-CREATE DATABASE AutomatedCRM;
-GO
-USE AutomatedCRM;
-GO
+-- CREATE DATABASE AutomatedCRM;
+-- GO
+-- USE AutomatedCRM;
+-- GO
 
 CREATE TABLE Regions (
     RegionID INT PRIMARY KEY IDENTITY(1,1),
