@@ -146,3 +146,23 @@ VALUES (1, 2, 1, 1200.00), (1, 1, 1, 199.99);
 
 
 -- SQL Join ()
+
+SELECT R.RegionName,SA.FirstName AS AgentName,COUNT(D.DealID) AS TotalDeals,SUM(D.TotalAmount) AS TotalRevenue
+FROM SalesAgents SA
+INNER JOIN Regions R ON SA.RegionID = R.RegionID
+INNER JOIN Deals D ON SA.AgentID = D.AgentID
+GROUP BY R.RegionName, SA.FirstName;
+
+
+SELECT L.FirstName,L.LastName,L.Status,MC.CampaignName
+FROM Leads L
+LEFT JOIN Customers C ON L.LeadID = C.LeadID
+INNER JOIN MarketingCampaigns MC ON L.CampaignID = MC.CampaignID
+WHERE C.CustomerID IS NULL; -- This filter finds the non-converted leads
+
+SELECT D.DealID,D.DealDate,C.FirstName AS CustomerName,P.ProductName,DI.Quantity,DI.SoldPrice,(DI.Quantity * DI.SoldPrice) AS LineTotal
+FROM Deals D
+JOIN Customers C ON D.CustomerID = C.CustomerID
+JOIN DealtItems DI ON D.DealID = DI.DealID
+JOIN Products P ON DI.ProductID = P.ProductID
+WHERE D.DealID = 1; -- Change '1' to view a specific deal
