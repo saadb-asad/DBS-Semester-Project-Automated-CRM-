@@ -144,6 +144,18 @@ VALUES (1, 1, 'Closed-Won', 1399.99);
 INSERT INTO DealtItems (DealID, ProductID, Quantity, SoldPrice) 
 VALUES (1, 2, 1, 1200.00), (1, 1, 1, 199.99);
 
+SELECT D.DealID,C.FirstName + ' ' + C.LastName AS CustomerName,D.TotalAmount,D.Stage
+FROM Deals D
+JOIN Customers C ON D.CustomerID = C.CustomerID
+ORDER BY D.TotalAmount DESC;
+
+SELECT InteractionDate,Type,Notes
+FROM Interactions
+ORDER BY InteractionDate DESC;
+
+SELECT * FROM Customers
+ORDER BY LastName ASC, FirstName ASC;
+
 
 -- SQL Join ()
 
