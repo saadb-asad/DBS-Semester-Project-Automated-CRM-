@@ -22,10 +22,10 @@ def get_data(query):
 st.set_page_config(page_title="Automated CRM", layout="wide")
 st.title("Automated CRM System")
 st.sidebar.title("Navigation")
-option = st.sidebar.radio("Go to:", ["Dashboard", "Add New Lead", "Sales Agents", "Automation Center"])
+option = st.sidebar.radio("Go to:", ["Dashboard", "Sales Agents", "Automation Center", "Analysis"])
 
 if option == "Dashboard":
-    st.header("Executive Overview")
+    st.header("Overview")
 
     revenue_df = get_data("SELECT SUM(TotalAmount) as Total FROM Deals WHERE Stage = 'Closed-Won'")
     total_rev = revenue_df.iloc[0]['Total'] if not revenue_df.empty and revenue_df.iloc[0]['Total'] else 0
@@ -48,7 +48,7 @@ if option == "Dashboard":
 
 
 elif option == "Sales Agents":
-    st.header("Sales Force Performance")
+    st.header("Sales Performance:")
 
     sql_agents = """
                  SELECT SA.FirstName, 
@@ -151,7 +151,7 @@ elif option == "Automation Center":
 
 
 elif option == "Analysis":
-    st.header("📉 Sales Analysis & Sorting")
+    st.header("Sales Analysis & Sorting")
 
 
     st.subheader("View Deals")
@@ -206,3 +206,49 @@ elif option == "Analysis":
     """
     
     st.table(get_data(sql_rank))
+
+
+elif option == "Pipeline View":
+    st.header("Lead Conversion Pipeline")
+
+
+    view_filter = st.radio("Show:", ["All", "Only Leads", "Only Customers"], horizontal=True)
+
+
+    sql_base = """
+    SELECT 
+        L.FirstName + ' ' + L.LastName AS Name,
+        MC.CampaignName AS Source,
+        CASE 
+            WHEN C.CustomerID IS NOT NULL THEN 'Customer'
+            ELSE 'Lead'
+        END AS Status
+    FROM Leads L
+    LEFT JOIN Customers C ON L.LeadID = C.LeadID
+    JOIN MarketingCampaigns MC ON L.CampaignID = MC.CampaignID
+    """
+
+
+    df = get_data(sql_base)
+
+    if view_filter == "Only Leads":
+        df = df[df['Status'] == 'Lead']
+    elif view_filter == "Only Customers":
+        df = df[df['Status'] == 'Customer']
+
+
+    def color_status(val):
+        color = '#d4edda' if val == 'Customer' else '#fff3cd'
+        return f'background-color: {color}'
+
+    st.subheader(f"List of {view_filter}")
+    
+
+    st.dataframe(df.style.applymap(color_status, subset=['Status']))
+
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Total Leads", len(df[df['Status'] == 'Lead']))
+    with col2:
+        st.metric("Converted Customers", len(df[df['Status'] == 'Customer']))
