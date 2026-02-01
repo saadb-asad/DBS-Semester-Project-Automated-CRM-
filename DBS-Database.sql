@@ -298,6 +298,20 @@ SELECT * FROM Customers
 ORDER BY LastName ASC, FirstName ASC;
 
 
+SELECT D.DealID,C.FirstName + ' ' + C.LastName AS CustomerName,D.TotalAmount,D.Stage
+FROM Deals D
+JOIN Customers C ON D.CustomerID = C.CustomerID
+ORDER BY D.TotalAmount DESC;
+
+SELECT InteractionDate,Type,Notes
+FROM Interactions
+ORDER BY InteractionDate DESC;
+
+
+SELECT * FROM Customers
+ORDER BY LastName ASC, FirstName ASC;
+
+
 -- SQL Join ()
 
 SELECT R.RegionName,SA.FirstName AS AgentName,COUNT(D.DealID) AS TotalDeals,SUM(D.TotalAmount) AS TotalRevenue
